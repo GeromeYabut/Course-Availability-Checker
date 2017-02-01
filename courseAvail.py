@@ -2,10 +2,10 @@ import requests
 import smtplib
 import tkinter
 
-top = tkinter.Tk()
-top.mainloop()
+#top = tkinter.Tk()
+#top.mainloop()
 
-
+"""
 def classavail(url):
     link = url
     f = requests.get(link)
@@ -21,6 +21,35 @@ def classavail(url):
         return 1
     else:
         return 0
+"""
+
+def classavail(url):
+    link = courseavail
+
+    f = requests.get(link)
+    unparsedLines = []
+    for line in f:
+        if ("has_seats" in str(line)):
+            unparsedLines.append(line)
+#print(len(unparsedLines))
+#print(unparsedLines)
+
+    parse2 = []
+
+    for item in unparsedLines:
+        parse2.append(str(item).split(','))
+
+    seatdata = ''
+
+    for item in parse2:
+        for data in item:
+            if("has_seats" in data):
+                seatdata = data
+                availability = seatdata.strip()[-2:-1]
+                return 1
+    return 0
+
+
 
 def sendMail(text):
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -39,8 +68,13 @@ def sendMail(text):
     server.quit()
 
 
+School = input("Enter school code, i.e. COEN\n")
+Number = input("\nEnter course code, i.e. 10\n")
 
-courseavail = "https://www.scu.edu/apps/ws/courseavail/classes/3840/ugrad/COEN%20177"
+"""courseavail = "https://www.scu.edu/apps/ws/courseavail/classes/3840/ugrad/COEN%20177" """
+
+courseavail = "https://www.scu.edu/apps/ws/courseavail/classes/3840/ugrad/" + School + "%20" + str(Number)
+print(courseavail)
 
 
 
